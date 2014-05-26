@@ -3,12 +3,10 @@
     // connect to socket
     var socket = io.connect(location.origin);
 
-    socket.emit("register-controller");
+    socket.on("rcv.register-controller", function(data) {
+        alert(data.id);
+    })
 
-    $(document).ready(function() {
-        $('body button').click(function() {
-            socket.emit("controller-data");
-        });
-    });
+    socket.emit("snd.register-controller");
 
 })(jQuery);
