@@ -1,51 +1,63 @@
-var Splash = require('./Stage/Splash.js');
-var Tetris = require('./Stage/Tetris.js');
+// connections
+var displays = {};
+var controllers = {};
 
-var Game = (function() {
+// state machine
+var currently = null;
+var states = {
+    splash: {
+        key: "splash",
+        run: function() {
+            // pass, only listen to signals
+        }
+    },
+    tetris: {
+        key: "tetris",
+        run: function() {
+            console.log("meep");
+        }
+    },
+    end: {
+        key: "end",
+        run: function() {
+            // pass, only listen to signals
+        }
+    }
+};
 
-    var states = {
-        'splash': new Splash(),
-        'tetris': new Tetris()
-    };
+// interval
 
-    var controllers = [];
-    var displays = [];
-    var state = states.tetris;
+exports.start = function() {
+    currently = states.splash;
+    console.log("Game started. Awaiting connections.");
+};
 
-    // constructor
-    var self = (function() {
-        var me = this;
+exports.getState = function() {
+    return currently;
+}
 
-        me.getState = function() {
-            return state;
-        };
+exports.addDisplay = function(socket) {
+    displays[socket.id] = socket;
+    console.log("Added a display. Totals to " + Object.keys(displays).length);
+}
 
-        me.emitDisplays = function (type, data) {
-            for (var i = 0; i < displays.length; i++) {
-                displays[i].socket.emit(type, data);
-            }
-        };
+exports.addController = function(socket) {
+    controllers[socket.id] = socket;
+    console.log("Added a controller. Totals to " + Object.keys(controllers).length);
+}
 
-        me.addDisplay = function (id, socket) {
-            displays.push({
-                'id': id,
-                'socket': socket
-            })
-        };
+exports.disconnect = function(socket) {
+    if (displays[socket.id]) {
+        delete displays[socket.id];
+        console.log("A display disconnected.");
+    }
 
-        me.hasEmptySlots = function () {
-            return controllers.length < 2;
-        };
+    if (controllers[socket.id]) {
+        delete controllers[socket.id];
+        console.log("A controller disconnected.");
+    }
+}
 
-        me.addController = function(id, socket) {
-            controllers.push({
-                'id': id,
-                'socket': socket
-            });
-        };
-    });
-
-    return self;
-})();
-
-module.exports = Game;
+exports.run = function() {
+    set
+};

@@ -17,8 +17,4 @@
 
     // connect to server
     socket.emit("snd.register-display");
-
-    setInterval(function() {
-        alert(stage);
-    }, 10000);
 })(jQuery);

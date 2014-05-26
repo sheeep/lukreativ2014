@@ -21,6 +21,7 @@ server.listen(8090);
 
 // initialize stuff
 var game = new Game();
+game.run();
 
 // routes
 app.get("/", function(req, res) {
@@ -67,13 +68,13 @@ io.sockets.on("connection", function(socket) {
         });
 
         game.emitDisplays("rcv.state", {
-            'state': game.getState().getData()
+            'state': game.getStage().getData()
         });
     });
 
     socket.on("snd.state", function() {
         game.emitDisplays("rcv.state", {
-            'state': game.getState().getData()
+            'state': game.getStage().getData()
         });
-    })
+    });
 });
