@@ -74,17 +74,12 @@ Game.disconnect = function(socket) {
  * Actual loop/game related stuff.
  * Set the first state to intro on bootup.
  */
-Game.fps = 60;
 Game.boot = function() {
     Game.states.intro.init();
     Game.states.game.init();
     Game.states.outro.init();
 
-    Game.state = Game.states.intro;
-};
-
-Game.run = function() {
-    console.log("here");
+    Game.state = Game.states.game;
 };
 
 //Game._intervalId = setInterval(Game.run, 1000 / Game.fps);

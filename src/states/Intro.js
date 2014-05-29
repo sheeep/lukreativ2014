@@ -13,4 +13,12 @@ Intro.init = function() {
     // pass
 }
 
+Intro.start = function() {
+
+};
+
+Intro.end = function() {
+
+};
+
 module.exports = Intro;

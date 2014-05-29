@@ -13,4 +13,12 @@ Outro.init = function() {
     // pass
 }
 
+Outro.start = function() {
+
+};
+
+Outro.end = function() {
+
+};
+
 module.exports = Outro;
