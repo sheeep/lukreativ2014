@@ -11,11 +11,11 @@ var Game = require("./src/Game.js");
 Game.boot();
 
 // configure application
-app.set("views", __dirname + "/../views");
+app.set("views", __dirname + "/views");
 app.engine("html", engines.ejs);
 app.set("view engine", "html");
 app.use(express.static(__dirname + "/node_modules"));
-app.use(express.static(__dirname + "/../public"));
+app.use(express.static(__dirname + "/public"));
 
 server.listen(8090);
 
