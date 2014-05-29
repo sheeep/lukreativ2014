@@ -5,6 +5,9 @@ var io = require("socket.io").listen(server);
 var engines = require("consolidate");
 var colors = require("colors");
 
+var Game = {};
+var Log = {};
+
 app.set("views", __dirname + "/views");
 app.engine("html", engines.ejs);
 app.set("view engine", "html");
@@ -29,10 +32,8 @@ app.get("/thanks", function(req, res) {
  * Game related stuff, mostly socket
  * handler and helpers
  */
-Game = {};
 Game.display = null;
 Game.controllers = {};
-var Log = {};
 
 /**
  * You can provide a severity by passing a
