@@ -51,9 +51,9 @@ Log.out = function(msg, severity) {
     var prefix = "";
 
     switch (severity) {
-        case 0: prefix = "[Error] ".red;
-        case 1: prefix = "[Info] ".yellow;
-        case 2: prefix = "[Debug] ".green;
+        case 0: prefix = "[Error] ".red;   break;
+        case 1: prefix = "[Info] ".yellow; break;
+        case 2: prefix = "[Debug] ".green; break;
     }
 
     if (severity <= Log.level) {
@@ -63,7 +63,7 @@ Log.out = function(msg, severity) {
 
 io.sockets.on("connection", function(socket) {
     socket.on("snd.register-display", function() {
-        Log.out("A display registered", 1);
+        Log.out("A display registered", 2);
 
         if (null === Game.display) {
             Game.display = socket;
@@ -84,7 +84,7 @@ io.sockets.on("connection", function(socket) {
     });
 
     socket.on("snd.register-controller", function() {
-        Log.out("A controller registered", 1);
+        Log.out("A controller registered", 2);
 
         if (null === Game.display) {
             Log.out("There is no display registered!", 0);
@@ -136,8 +136,10 @@ io.sockets.on("connection", function(socket) {
             Log.out("Display disconnected, inform all collections!", 1);
 
             for (var i in Game.controllers) {
-                Game.controllers[sock].emit("rcv.display-disconnect");
+                Game.controllers[i].emit("rcv.display-disconnect");
             }
+
+            Game.display = null;
 
             return;
         }
