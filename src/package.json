@@ -5,6 +5,7 @@
         "socket.io" : "1.0",
         "express" : "3.x",
         "ejs" : "*",
-        "consolidate": "*"
+        "consolidate": "*",
+        "colors": "*"
     }
 }

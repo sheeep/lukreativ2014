@@ -4,9 +4,11 @@ var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
 var engines = require("consolidate");
 
-// game
-game = require('./lib/game.js');
-game.start();
+var Log = require("./lib/log.js");
+var Game = require("./lib/game.js");
+
+// start game
+Game.boot();
 
 // configure application
 app.set("views", __dirname + "/../views");
@@ -30,18 +32,18 @@ app.get("/controller", function(req, res) {
 io.sockets.on("connection", function(socket) {
 
     socket.on("snd.register-display", function() {
-        game.addDisplay(socket);
+        Game.addDisplay(socket);
     });
 
     socket.on("snd.register-controller", function() {
-        if (game.getState().key !== "splash") {
+        if (Game.getState().key !== "intro") {
             return;
         }
 
-        game.addController(socket);
+        Game.addController(socket);
     });
 
     socket.on("disconnect", function() {
-        game.disconnect(socket);
+        Game.disconnect(socket);
     });
 });
