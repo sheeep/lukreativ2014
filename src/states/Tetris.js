@@ -68,6 +68,7 @@ Tetris.run = function() {
         Tetris.allocatePlayerBlocks();
 
         // move all blocks to y-1
+        Tetris.applyGravity();
 
         Tetris.iteration = 0;
     }
@@ -113,7 +114,7 @@ Tetris.occupied = function(type, x, y, dir) {
     var result = false;
 
     Tetris.eachblock(type, x, y, dir, function(x, y) {
-        if ((x < 0) || (x >= nx) || (y < 0) || (y >= ny) || getBlock(x,y)) {
+        if ((x < 0) || (x >= Tetris.x) || (y < 0) || (y >= Tetris.y) || Tetris.blockTaken(x, y)) {
             result = true;
         }
     });
@@ -166,6 +167,12 @@ Tetris.allocatePlayerBlocks = function() {
         }
 
         players[idx] = player;
+    }
+};
+
+Tetris.applyGravity = function() {
+    for (var idx in players) {
+        var player = players[idx];
     }
 };
 
