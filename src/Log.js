@@ -1,5 +1,5 @@
 var colors = require('colors');
-var Game = require("./game.js");
+var Game = require("./Game.js");
 
 var Log = {};
 

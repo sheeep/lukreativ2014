@@ -4,8 +4,8 @@ var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
 var engines = require("consolidate");
 
-var Log = require("./lib/log.js");
-var Game = require("./lib/game.js");
+var Log = require("./src/Log.js");
+var Game = require("./src/Game.js");
 
 // start game
 Game.boot();
