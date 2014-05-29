@@ -9,4 +9,8 @@ Intro.view = function() {
     return {};
 };
 
+Intro.init = function() {
+    // pass
+}
+
 module.exports = Intro;

@@ -76,6 +76,10 @@ Game.disconnect = function(socket) {
  */
 Game.fps = 60;
 Game.boot = function() {
+    Game.states.intro.init();
+    Game.states.game.init();
+    Game.states.outro.init();
+
     Game.state = Game.states.intro;
 };
 

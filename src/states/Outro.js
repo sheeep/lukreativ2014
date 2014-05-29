@@ -9,4 +9,8 @@ Outro.view = function() {
     return {};
 };
 
+Outro.init = function() {
+    // pass
+}
+
 module.exports = Outro;
