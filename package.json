@@ -2,7 +2,6 @@
     "name": "lukreativ2014-server",
     "version": "0.1.0",
     "dependencies" : {
-        "socket.io" : "1.0",
         "express" : "3.x",
         "ejs" : "*",
         "consolidate": "*",
