@@ -79,9 +79,7 @@ Game.boot = function() {
     Game.states.game.init();
     Game.states.outro.init();
 
-    Game.state = Game.states.game;
+    Game.state = Game.states.intro;
 };
-
-//Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
 
 module.exports = Game;
