@@ -48,15 +48,13 @@ Log.out = function(msg, severity) {
     }
 
     // color prefix
-    var prefix = "[" + Game.state.key + "] ";
+    var prefix = "";
 
     switch (severity) {
-        case 0: prefix = prefix.green;
-        case 1: prefix = prefix.yellow;
-        case 2: prefix = prefix.red;
+        case 0: prefix = "[Error] ".red;
+        case 1: prefix = "[Info] ".yellow;
+        case 2: prefix = "[Debug] ".green;
     }
-
-    console.log(severity, Log.level);
 
     if (severity <= Log.level) {
         console.log(prefix + msg);
