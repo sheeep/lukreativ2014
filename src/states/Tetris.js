@@ -65,13 +65,13 @@ Tetris.fps = 60;
  * Credits: http://codeincomplete.com/posts/2011/10/10/javascript_tetris/
  */
 Tetris.blocks = {
-    i: { blocks: [0x0F00, 0x2222, 0x00F0, 0x4444], color: 'cyan'   },
-    j: { blocks: [0x44C0, 0x8E00, 0x6440, 0x0E20], color: 'blue'   },
-    l: { blocks: [0x4460, 0x0E80, 0xC440, 0x2E00], color: 'orange' },
-    o: { blocks: [0xCC00, 0xCC00, 0xCC00, 0xCC00], color: 'yellow' },
-    s: { blocks: [0x06C0, 0x8C40, 0x6C00, 0x4620], color: 'green'  },
-    t: { blocks: [0x0E40, 0x4C40, 0x4E00, 0x4640], color: 'purple' },
-    z: { blocks: [0x0C60, 0x4C80, 0xC600, 0x2640], color: 'red'    }
+    i: { blocks: [0x0F00, 0x2222, 0x00F0, 0x4444], type: 'i' },
+    j: { blocks: [0x44C0, 0x8E00, 0x6440, 0x0E20], type: 'j' },
+    l: { blocks: [0x4460, 0x0E80, 0xC440, 0x2E00], type: 'l' },
+    o: { blocks: [0xCC00, 0xCC00, 0xCC00, 0xCC00], type: 'o' },
+    s: { blocks: [0x06C0, 0x8C40, 0x6C00, 0x4620], type: 's' },
+    t: { blocks: [0x0E40, 0x4C40, 0x4E00, 0x4640], type: 't' },
+    z: { blocks: [0x0C60, 0x4C80, 0xC600, 0x2640], type: 'z' }
 }
 
 Tetris.blockTaken = function(x, y) {
