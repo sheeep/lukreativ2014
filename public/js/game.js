@@ -45,7 +45,7 @@ Game.start = function() {
     for (var x = 0; x < Game.mx; x++) {
         map[x] = [];
 
-        for (var y = 0; < Game.my; y++) {
+        for (var y = 0; y < Game.my; y++) {
             map[x][y] = 0;
         }
     }

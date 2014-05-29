@@ -20,7 +20,7 @@
 
         $(".button").on("click", function(event) {
             var id = $(this).attr('id');
-            
+
             if ("exit" === id) {
                 window.location.href = routes.thanks;
                 return;
