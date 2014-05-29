@@ -20,6 +20,11 @@
 
         $(".button").on("click", function(event) {
             var id = $(this).attr('id');
+            
+            if ("exit" === id) {
+                window.location.href = routes.thanks;
+                return;
+            }
 
             socket.emit("snd.controller-data", {
                 direction: direction[$(this).attr('id')]
@@ -29,7 +34,7 @@
 
     socket.on("rcv.register-controller", function(data) {
         // no success, redirect to thanks screen
-        if (data.success === false) {
+        if (false === data.success) {
             window.location.href = routes.thanks;
         }
     });
