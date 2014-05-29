@@ -36,7 +36,7 @@ io.sockets.on("connection", function(socket) {
     });
 
     socket.on("snd.register-controller", function() {
-        if (Game.getState().key !== "intro") {
+        if (Game.state.key !== "intro") {
             return;
         }
 

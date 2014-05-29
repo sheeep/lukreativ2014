@@ -1,6 +1,11 @@
 // imports
 var events = require("events");
 
+// states
+var Intro = require("./states/Intro.js");
+var Outro = require("./states/Outro.js");
+var Tetris = require("./states/Tetris.js");
+
 /**
  * The application object, containing
  * all states and methods needed.
@@ -22,20 +27,14 @@ Game.bus = new events.EventEmitter();
  * and an outro.
  */
 Game.states = {
-    intro: {
-        key: "intro"
-    },
-    game: {
-        key: "game",
-    },
-    outro: {
-        key: "outro"
-    }
+    intro: Intro,
+    game: Tetris,
+    outro: Outro
 };
 
 Game.state = null;
-Game.getState = function() {
-    return Game.state;
+Game.view = function() {
+    return Game.state.view();
 };
 
 /**
