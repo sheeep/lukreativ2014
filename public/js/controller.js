@@ -1,10 +1,10 @@
 (function($) {
 
     var direction = {
-        left:   0x01,
-        right:  0x02,
-        up:     0x03,
-        down:   0x04
+        left:   1,
+        right:  2,
+        up:     3,
+        down:   4
     };
 
     var routes = {
@@ -18,17 +18,21 @@
         // register as controller
         socket.emit("snd.register-controller");
 
-        $(".button").on("click", function(event) {
+        $(".button").on("click doubleclick", function(event) {
             var id = $(this).attr('id');
+
+            event.preventDefault();
 
             if ("exit" === id) {
                 window.location.href = routes.thanks;
-                return;
+                return false;
             }
 
             socket.emit("snd.controller-data", {
                 direction: direction[$(this).attr('id')]
             });
+
+            return false;
         });
     });
 
@@ -45,3 +49,7 @@
     });
 
 })(jQuery);
+
+document.ontouchmove = function(event){
+    event.preventDefault();
+}
