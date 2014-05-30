@@ -14,7 +14,7 @@ Game.queue = {};
 Game.bus = new EventEmitter();
 
 /**
- * Some map options and data.
+ * Some map and game options and data.
  */
 Game.mx = 10;
 Game.my = 10;
@@ -22,11 +22,19 @@ Game.map = null;
 Game.running = false;
 
 /**
+ * Game Timer
+ * Whereas roundTime is the amount of seconds to play
+ * in one round (max). The timer represents the current
+ * time and must be reset when the game starts.
+ */
+Game.roundTime = 10;
+Game.timer = 10;
+
+/**
  * Keep track of the interval id
  * to get rid of it, if the game
  * ends.
  */
-Game.fps = 1;
 Game._interval = null;
 
 /**
@@ -52,7 +60,7 @@ Game.start = function() {
     // get all the players in the queue
     // and attach them to the game.
     for (var id in Game.queue) {
-        Game.players[id] = Game.queue[id];
+        Game.players[id] = Game.createPlayer(id);
 
         // and of course, remove it from the queue
         delete Game.queue[id];
@@ -71,6 +79,9 @@ Game.start = function() {
 
     Game.map = map;
 
+    // Set the timer
+    Game.timer = (new Date()).getSeconds();
+
     // Everybody stand back, we start the game loop!
     Game._interval = requestAnimationFrame(Game.run);
     Game.running = true;
@@ -81,7 +92,7 @@ Game.end = function() {
 
     // clear player array by shoveling them to the queue
     for (var id in Game.players) {
-        Game.queue[id] = Game.players[id];
+        Game.queue[id] = Game.players[id].id;
         delete Game.players[id];
     }
 
@@ -91,5 +102,31 @@ Game.end = function() {
 Game.run = function() {
     Game._interval = requestAnimationFrame(Game.run);
 
-    console.log("tick");
+    Game.checkFinishConditions();
 }
+
+/**
+ * Game Logic!
+ */
+Game.checkFinishConditions = function() {
+    var over = false;
+
+    // first check if roundTime is over
+    over |= Game.timer + Game.roundTime < (new Date()).getSeconds();
+
+    if (over) {
+        Game.end();
+    }
+
+    return over;
+};
+
+/**
+ * Some in-game helper functions
+ */
+Game.createPlayer = function(id) {
+    return {
+        id: id,
+        alive: true
+    };
+};
