@@ -12,5 +12,20 @@
         if (!data.success) {
             alert("An error occured: " + data.message);
         }
+
+        ready = true;
     });
+
+    socket.on("rcv.new-controller", function(data) {
+        Game.queue[data.id] = {};
+    });
+
+    $('.start').click(function() {
+        Game.start();
+    });
+
+    $('.end').click(function() {
+        Game.end();
+    });
+
 })(jQuery);
