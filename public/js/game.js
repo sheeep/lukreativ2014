@@ -1,4 +1,16 @@
+var direction = {
+    left: 1,
+    right: 2,
+    up: 3,
+    down: 4
+};
+
 var Game = {};
+
+/**
+ * Drawing context, aka pane.
+ */
+Game.ctx = null;
 
 /**
  * Track players in the current game and
@@ -16,10 +28,16 @@ Game.bus = new EventEmitter();
 /**
  * Some map and game options and data.
  */
-Game.mx = 10;
-Game.my = 10;
 Game.map = null;
 Game.running = false;
+
+// max x, max y, aka width/height of the matrix
+Game.mx = 50;
+Game.my = 50;
+
+// width/height of a tile
+Game.wx = 10;
+Game.wy = 10;
 
 /**
  * Game Timer
@@ -36,6 +54,8 @@ Game.timer = 10;
  * ends.
  */
 Game._interval = null;
+Game.tickRate = 10;
+Game.tick = 0;
 
 /**
  * "start/end" represents the Start and
@@ -56,7 +76,9 @@ Game.ready = function() {
     return false;
 };
 
-Game.start = function() {
+Game.start = function(ctx) {
+    Game.ctx = ctx;
+
     // get all the players in the queue
     // and attach them to the game.
     for (var id in Game.queue) {
@@ -79,13 +101,14 @@ Game.start = function() {
 
     Game.map = map;
 
-    // Set the timer
+    // Set the timer and reset render ticker
     Game.timer = (new Date()).getSeconds();
+    Game.tick = 0;
 
     // Everybody stand back, we start the game loop!
     Game._interval = requestAnimationFrame(Game.run);
     Game.running = true;
-}
+};
 
 Game.end = function() {
     cancelAnimationFrame(Game._interval);
@@ -97,13 +120,57 @@ Game.end = function() {
     }
 
     Game.running = false;
-}
+};
 
 Game.run = function() {
     Game._interval = requestAnimationFrame(Game.run);
 
+    // increment tick
+    Game.tick++;
+
+    if (Game.tick < Game.tickRate) {
+        return;
+    }
+
+    Game.calculateState();
+    Game.render();
     Game.checkFinishConditions();
-}
+
+    // reset ticker
+    Game.tick = 0;
+};
+
+/**
+ * Create the new state.
+ */
+Game.calculateState = function() {
+    Game.movePlayers();
+};
+
+/**
+ * Do the rendering, if required.
+ */
+Game.render = function() {
+    Game.resetPane();
+
+    for (id in Game.players) {
+        Game.drawPlayer(id);
+    }
+};
+
+Game.resetPane = function() {
+    Game.ctx.clearRect(0, 0, (Game.mx - 1) * Game.wx, (Game.my - 1) * Game.wy);
+};
+
+Game.drawPlayer = function(id) {
+    if (!id in Game.players) {
+        return;
+    }
+
+    var player = Game.players[id];
+
+    Game.ctx.fillRect(player.x, player.y, 10, 10);
+};
 
 /**
  * Game Logic!
@@ -121,12 +188,54 @@ Game.checkFinishConditions = function() {
     return over;
 };
 
+Game.movePlayers = function() {
+    for (id in Game.players) {
+
+        var player = Game.players[id];
+
+        switch (player.direction) {
+            case direction.up:
+                player.y -= Game.wy;
+            break;
+
+            case direction.down:
+                player.y += Game.wy;
+            break;
+
+            case direction.left:
+                player.x -= Game.wx;
+            break;
+
+            case direction.right:
+                player.x += Game.wx
+            break;
+        }
+
+        Game.players[id] = player;
+    }
+};
+
 /**
  * Some in-game helper functions
+ * TODO check if x/y are already taken.
  */
 Game.createPlayer = function(id) {
     return {
         id: id,
-        alive: true
+        alive: true,
+        direction: Game.rand(1, 4),
+        x: Game.rand(0, (Game.mx - 1)) * Game.wx,
+        y: Game.rand(0, (Game.my - 1)) * Game.wy
+
     };
+};
+
+Game.setDirection = function(playerId, direction) {
+    if (playerId in Game.players) {
+        Game.players[playerId].direction = direction;
+    }
+};
+
+Game.rand = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 };

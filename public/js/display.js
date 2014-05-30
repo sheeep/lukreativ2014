@@ -20,8 +20,12 @@
         Game.queue[data.id] = {};
     });
 
+    socket.on("rcv.controller-data", function(data) {
+        Game.setDirection(data.id, data.direction);
+    });
+
     $('.start').click(function() {
-        Game.start();
+        Game.start(document.getElementById('snake').getContext('2d'));
     });
 
     $('.end').click(function() {
