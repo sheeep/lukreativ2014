@@ -39,6 +39,8 @@ Game.my = 50;
 Game.wx = 10;
 Game.wy = 10;
 
+Game.startTrackSize = 10;
+
 /**
  * Game Timer
  * Whereas roundTime is the amount of seconds to play
@@ -169,7 +171,11 @@ Game.drawPlayer = function(id) {
 
     var player = Game.players[id];
 
-    Game.ctx.fillRect(player.x, player.y, 10, 10);
+    for (var i = 0; i < player.track.length; i++) {
+        var tile = player.track[i];
+
+        Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, 10, 10);
+    }
 };
 
 /**
@@ -191,23 +197,33 @@ Game.checkFinishConditions = function() {
 Game.movePlayers = function() {
     for (id in Game.players) {
 
+        // just to be sure
+        if (!Game.players.hasOwnProperty(id)) {
+            return;
+        }
+
         var player = Game.players[id];
+        var head = player.track[0];
+
+        // first of all, remove the last part
+        // of the track
+        player.track.pop();
 
         switch (player.direction) {
             case direction.up:
-                player.y -= Game.wy;
+                player.track.unshift({x: head.x, y: head.y - 1 });
             break;
 
             case direction.down:
-                player.y += Game.wy;
+                player.track.unshift({x: head.x, y: head.y + 1 });
             break;
 
             case direction.left:
-                player.x -= Game.wx;
+                player.track.unshift({x: head.x - 1, y: head.y});
             break;
 
             case direction.right:
-                player.x += Game.wx
+                player.track.unshift({x: head.x + 1, y: head.y});
             break;
         }
 
@@ -220,14 +236,37 @@ Game.movePlayers = function() {
  * TODO check if x/y are already taken.
  */
 Game.createPlayer = function(id) {
-    return {
+    var player = {
         id: id,
         alive: true,
         direction: Game.rand(1, 4),
-        x: Game.rand(0, (Game.mx - 1)) * Game.wx,
-        y: Game.rand(0, (Game.my - 1)) * Game.wy
-
+        track: []
     };
+
+    // create a start head tile
+    var hX = Game.rand(Game.startTrackSize, (Game.mx - 1 - Game.startTrackSize));
+    var hY = Game.rand(Game.startTrackSize, (Game.my - 1 - Game.startTrackSize));
+
+    player.track.push({x: hX, y: hY});
+
+    for (var i = 1; i < Game.startTrackSize; i++) {
+        switch(player.direction) {
+            case direction.up:
+                player.track.push({x: hX, y: hY + i});
+            break;
+            case direction.down:
+                player.track.push({x: hX, y: hY - i});
+            break;
+            case direction.left:
+                player.track.push({x: hX + i, y: hY});
+            break;
+            case direction.right:
+                player.track.push({x: hX - i, y: hY});
+            break;
+        }
+    }
+
+    return player;
 };
 
 Game.setDirection = function(playerId, direction) {
