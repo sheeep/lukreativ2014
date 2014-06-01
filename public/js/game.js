@@ -260,9 +260,23 @@ Game.createPlayer = function(id) {
     return player;
 };
 
-Game.setDirection = function(playerId, direction) {
+Game.setDirection = function(playerId, dir) {
     if (playerId in Game.players) {
-        Game.players[playerId].direction = direction;
+
+        var current = Game.players[playerId].direction;
+
+        // nothing changed
+        if (current === dir) {
+            return;
+        }
+
+        // ugly as fuck :(
+        if (current === direction.up && dir === direction.down) return;
+        if (current === direction.down && dir === direction.up) return;
+        if (current === direction.left && dir === direction.right) return;
+        if (current === direction.right && dir === direction.left) return;
+
+        Game.players[playerId].direction = dir;
     }
 };
 
