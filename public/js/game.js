@@ -173,7 +173,9 @@ Game.drawPlayer = function(id) {
 
     for (var i = 0; i < player.track.length; i++) {
         var tile = player.track[i];
+        var color = player.alive ? '#FF0000' : '#000000';
 
+        Game.ctx.fillStyle = color;
         Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, 10, 10);
     }
 };
@@ -204,6 +206,11 @@ Game.movePlayers = function() {
 
         var player = Game.players[id];
         var head = player.track[0];
+
+        // do nothing if player is dead
+        if (!player.alive) {
+            return;
+        }
 
         // first of all, remove the last part
         // of the track
@@ -248,10 +255,10 @@ Game.createPlayer = function(id) {
         var y = hY;
 
         switch(player.direction) {
-            case direction.up:    y -= i; break;
-            case direction.down:  y += i; break;
-            case direction.left:  x -= i; break;
-            case direction.right: x += i; break;
+            case direction.up:    y += i; break;
+            case direction.down:  y -= i; break;
+            case direction.left:  x += i; break;
+            case direction.right: x -= i; break;
         }
 
         player.track.push(Game.getTile(x, y));
