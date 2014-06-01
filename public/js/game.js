@@ -48,7 +48,7 @@ Game.startTrackSize = 10;
  * in one round (max). The timer represents the current
  * time and must be reset when the game starts.
  */
-Game.roundTime = 10;
+Game.roundTime = 30;
 Game.timer = 10;
 
 /**
@@ -220,6 +220,11 @@ Game.movePlayers = function() {
         var player = Game.players[id];
         var head = player.track[0];
 
+        console.log(head);
+
+        var x = head.x;
+        var y = head.y;
+
         // do nothing if player is dead
         if (!player.alive) {
             return;
@@ -227,10 +232,12 @@ Game.movePlayers = function() {
 
         // first of all, remove the last part
         // of the track
-        player.track.pop();
+        if (!player.hasEaten) {
+            player.track.pop();
+        }
 
-        var x = head.x;
-        var y = head.y;
+        // reset food flag
+        player.hasEaten = false;
 
         switch(player.direction) {
             case direction.up:    y--; break;
@@ -239,7 +246,10 @@ Game.movePlayers = function() {
             case direction.right: x++; break;
         }
 
-        player.track.unshift(Game.getTile(x, y));
+        var newHead = Game.getTile(x, y);
+
+        Game.eat(player, newHead);
+        player.track.unshift(newHead);
 
         Game.players[id] = player;
     }
@@ -264,6 +274,19 @@ Game.addFood = function() {
     }
 };
 
+// TODO: Test with multiple food items, can we safely splice?
+Game.eat = function(player, tile) {
+    for (var i = 0; i < Game.food.length; i++) {
+        var food = Game.food[i];
+
+        if (food.x === tile.x && food.y === tile.y) {
+            // hit!
+            player.hasEaten = true;
+            Game.food.splice(i, 1);
+        }
+    }
+};
+
 /**
  * Some in-game helper functions
  * TODO check if x/y are already taken.
@@ -273,6 +296,7 @@ Game.createPlayer = function(id) {
         id: id,
         alive: true,
         direction: Game.rand(1, 4),
+        hasEaten: false,
         track: []
     };
 
