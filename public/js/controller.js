@@ -29,7 +29,7 @@
             }
 
             socket.emit("snd.controller-data", {
-                direction: direction[$(this).attr('id')]
+                direction: direction[id]
             });
 
             return false;
@@ -46,6 +46,25 @@
     socket.on("rcv.display-disconnect", function() {
         // no display connected or disconnected, redirect to thanks screen
         window.location.href = routes.thanks;
+    });
+
+    // TODO: For developer sanity purposes only.
+    $(document).keydown(function(e){
+
+        switch (e.keyCode) {
+            case 37:
+                $('#left').click();
+                break;
+            case 38:
+                $('#up').click();
+                break;
+            case 39:
+                $('#right').click();
+                break;
+            case 40:
+                $('#down').click();
+                break;
+        }
     });
 
 })(jQuery);
