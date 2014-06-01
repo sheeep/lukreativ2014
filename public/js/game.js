@@ -209,23 +209,17 @@ Game.movePlayers = function() {
         // of the track
         player.track.pop();
 
-        switch (player.direction) {
-            case direction.up:
-                player.track.unshift({x: head.x, y: head.y - 1 });
-            break;
+        var x = head.x;
+        var y = head.y;
 
-            case direction.down:
-                player.track.unshift({x: head.x, y: head.y + 1 });
-            break;
-
-            case direction.left:
-                player.track.unshift({x: head.x - 1, y: head.y});
-            break;
-
-            case direction.right:
-                player.track.unshift({x: head.x + 1, y: head.y});
-            break;
+        switch(player.direction) {
+            case direction.up:    y++; break;
+            case direction.down:  y--; break;
+            case direction.left:  x++; break;
+            case direction.right: x--; break;
         }
+
+        player.track.unshift(Game.getTile(x, y));
 
         Game.players[id] = player;
     }
@@ -250,20 +244,17 @@ Game.createPlayer = function(id) {
     player.track.push({x: hX, y: hY});
 
     for (var i = 1; i < Game.startTrackSize; i++) {
+        var x = hX;
+        var y = hY;
+
         switch(player.direction) {
-            case direction.up:
-                player.track.push({x: hX, y: hY + i});
-            break;
-            case direction.down:
-                player.track.push({x: hX, y: hY - i});
-            break;
-            case direction.left:
-                player.track.push({x: hX + i, y: hY});
-            break;
-            case direction.right:
-                player.track.push({x: hX - i, y: hY});
-            break;
+            case direction.up:    y++; break;
+            case direction.down:  y--; break;
+            case direction.left:  x++; break;
+            case direction.right: x--; break;
         }
+
+        player.track.push(Game.getTile(x, y));
     }
 
     return player;
@@ -277,4 +268,14 @@ Game.setDirection = function(playerId, direction) {
 
 Game.rand = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+Game.getTile = function(x, y) {
+    x = x % Game.mx;
+    x = x < 0 ? Game.mx - 1 : x;
+
+    y = y % Game.my;
+    y = y < 0 ? Game.my - 1 : y;
+
+    return {x: x, y: y};
 };
