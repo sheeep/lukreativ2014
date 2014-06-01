@@ -19,6 +19,7 @@ Game.ctx = null;
  */
 Game.players = {};
 Game.queue = {};
+Game.food = [];
 
 /**
  * The event bus to emit and listen to events.
@@ -102,6 +103,7 @@ Game.start = function(ctx) {
     }
 
     Game.map = map;
+    Game.food = [];
 
     // Set the timer and reset render ticker
     Game.timer = (new Date()).getSeconds();
@@ -146,6 +148,7 @@ Game.run = function() {
  * Create the new state.
  */
 Game.calculateState = function() {
+    Game.addFood();
     Game.movePlayers();
 };
 
@@ -154,6 +157,7 @@ Game.calculateState = function() {
  */
 Game.render = function() {
     Game.resetPane();
+    Game.drawFood();
 
     for (id in Game.players) {
         Game.drawPlayer(id);
@@ -176,7 +180,16 @@ Game.drawPlayer = function(id) {
         var color = player.alive ? '#FF0000' : '#000000';
 
         Game.ctx.fillStyle = color;
-        Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, 10, 10);
+        Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, Game.wx, Game.wy);
+    }
+};
+
+Game.drawFood = function() {
+    for (var i = 0; i < Game.food.length; i++) {
+        var item = Game.food[i];
+
+        Game.ctx.fillStyle = '#00FF00';
+        Game.ctx.fillRect(item.x * Game.wx, item.y * Game.wy, Game.wx, Game.wy);
     }
 };
 
@@ -229,6 +242,25 @@ Game.movePlayers = function() {
         player.track.unshift(Game.getTile(x, y));
 
         Game.players[id] = player;
+    }
+};
+
+Game.addFood = function() {
+    var foodLen = Math.max(1, Object.keys(Game.queue).length - 1);
+    var dF = foodLen - Game.food.length;
+
+    if (dF === 0) {
+        // nothing to do
+        return;
+    }
+
+    // TODO: Check for collisions
+    for (var i = 0; i < dF; i++) {
+        var x = Game.rand(0, Game.mx - 1);
+        var y = Game.rand(0, Game.my - 1);
+
+        // place new food item
+        Game.food.push({x: x, y: y});
     }
 };
 
