@@ -161,7 +161,7 @@ Game.render = function() {
 };
 
 Game.resetPane = function() {
-    Game.ctx.clearRect(0, 0, (Game.mx - 1) * Game.wx, (Game.my - 1) * Game.wy);
+    Game.ctx.clearRect(0, 0, Game.mx * Game.wx, Game.my * Game.wy);
 };
 
 Game.drawPlayer = function(id) {
@@ -213,10 +213,10 @@ Game.movePlayers = function() {
         var y = head.y;
 
         switch(player.direction) {
-            case direction.up:    y++; break;
-            case direction.down:  y--; break;
-            case direction.left:  x++; break;
-            case direction.right: x--; break;
+            case direction.up:    y--; break;
+            case direction.down:  y++; break;
+            case direction.left:  x--; break;
+            case direction.right: x++; break;
         }
 
         player.track.unshift(Game.getTile(x, y));
@@ -248,10 +248,10 @@ Game.createPlayer = function(id) {
         var y = hY;
 
         switch(player.direction) {
-            case direction.up:    y++; break;
-            case direction.down:  y--; break;
-            case direction.left:  x++; break;
-            case direction.right: x--; break;
+            case direction.up:    y -= i; break;
+            case direction.down:  y += i; break;
+            case direction.left:  x -= i; break;
+            case direction.right: x += i; break;
         }
 
         player.track.push(Game.getTile(x, y));
