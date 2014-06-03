@@ -18,21 +18,25 @@
         // register as controller
         socket.emit("snd.register-controller");
 
-        $(".button").on("click doubleclick", function(event) {
+        $(".btn:not(#exit)").on("touchstart", function(event) {
             var id = $(this).attr('id');
 
             event.preventDefault();
-
-            if ("exit" === id) {
-                window.location.href = routes.thanks;
-                return false;
-            }
 
             socket.emit("snd.controller-data", {
                 direction: direction[id]
             });
 
             return false;
+        });
+
+        $("#exit.btn").on("click", function(event) {
+            var r = confirm("Do you really wanna leave this epic game?");
+
+            if (true === r) {
+                window.location.href = routes.thanks;
+                return false;
+            }
         });
     });
 
