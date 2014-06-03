@@ -41,13 +41,13 @@
             return true;
         });
 
-        $("#start.btn").on("click", function(event) {
+        $("#start").on("click", function(event) {
             socket.emit("snd.game-start");
         });
     });
 
     socket.on("rcv.game-started", function() {
-        $("#start.btn").fadeOut();
+        $("#start").fadeOut();
     });
 
     socket.on("rcv.register-controller", function(data) {
