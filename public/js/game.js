@@ -104,13 +104,17 @@ Game.start = function(ctx) {
 };
 
 Game.end = function() {
+    Game.bus.emitEvent("ended");
     cancelAnimationFrame(Game._interval);
 
+    Game.players = {};
+    Game.queue = {};
+    /*
     // clear player array by shoveling them to the queue
     for (var id in Game.players) {
         Game.queue[id] = Game.players[id].id;
         delete Game.players[id];
-    }
+    }*/
 
     Game.running = false;
 };
