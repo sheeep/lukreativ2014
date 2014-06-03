@@ -1,0 +1,26 @@
+#canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    margin: -250px 0 0 -400px;
+    -webkit-box-shadow: 10px 10px 80px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 80px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 80px 0px rgba(0,0,0,0.75);
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+#circle {
+    background: transparent url(../img/lukreativ-circle.png) no-repeat left top;
+    background-size: 500px 500px;
+    height: 500px;
+    width: 500px;
+}
+
+#logo {
+    background: transparent url(../img/lukreativ-logo.png) no-repeat center top;
+    background-size: 300px 134px;
+    height: 134px;
+    width: 500px;
+}

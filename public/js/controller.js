@@ -30,13 +30,15 @@
             return false;
         });
 
-        $("#exit.btn").on("click", function(event) {
+        $(".exit i").on("click", function(event) {
             var r = confirm("Do you really wanna leave this epic game?");
 
             if (true === r) {
                 window.location.href = routes.thanks;
                 return false;
             }
+
+            return true;
         });
 
         $("#start.btn").on("click", function(event) {
