@@ -18,7 +18,7 @@
         // register as controller
         socket.emit("snd.register-controller");
 
-        $(".btn:not(#exit)").on("touchstart", function(event) {
+        $(".btn:not(#start)").on("touchstart", function(event) {
             var id = $(this).attr('id');
 
             event.preventDefault();
