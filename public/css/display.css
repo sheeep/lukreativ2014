@@ -13,14 +13,14 @@
 
 #circle {
     background: transparent url(../img/lukreativ-circle.png) no-repeat left top;
-    background-size: 500px 500px;
-    height: 500px;
-    width: 500px;
+    background-size: 700px;
+    height: 700px;
+    width: 700px;
 }
 
 #logo {
     background: transparent url(../img/lukreativ-logo.png) no-repeat center top;
     background-size: 300px 134px;
     height: 134px;
-    width: 500px;
+    width: 700px;
 }
