@@ -18,7 +18,10 @@
     });
 
     socket.on("rcv.new-controller", function(data) {
-        Game.queue[data.id] = {};
+        Game.queue[data.id] = {
+            id: data.id,
+            color: data.color
+        };
     });
 
     socket.on("rcv.controller-data", function(data) {

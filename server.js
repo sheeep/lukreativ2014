@@ -34,6 +34,20 @@ app.get("/thanks", function(req, res) {
  */
 Game.display = null;
 Game.controllers = {};
+Game.colors = [
+    '#ffdd0c',
+    '#fbb900',
+    '#ea5901',
+    '#e3000b',
+    '#d50350',
+    '#e5007d',
+    '#a60f7f',
+    '#a2145b',
+    '#95c11a',
+    '#21a635',
+    '#14a091',
+    '#25b8c4'
+];
 
 /**
  * You can provide a severity by passing a
@@ -98,9 +112,17 @@ io.sockets.on("connection", function(socket) {
             return;
         }
 
-        Game.controllers[socket.id] = socket;
+        var rI = Math.round(Math.random(0, Game.colors.length-1));
+        var pC = Game.colors.splice(rI, 1)[0];
+
+        Game.controllers[socket.id] = {
+            socket: socket,
+            color: pC
+        };
+
         Game.display.emit("rcv.new-controller", {
-            id: socket.id
+            id: socket.id,
+            color: pC
         });
     });
 
@@ -128,7 +150,7 @@ io.sockets.on("connection", function(socket) {
                 continue;
             }
 
-            Game.controllers[i].emit("rcv.game-started");
+            Game.controllers[i].socket.emit("rcv.game-started");
         }
     });
 
@@ -138,7 +160,7 @@ io.sockets.on("connection", function(socket) {
                 continue;
             }
 
-            Game.controllers[i].emit("rcv.display-disconnect");
+            Game.controllers[i].socket.emit("rcv.display-disconnect");
         }
     });
 
@@ -153,6 +175,10 @@ io.sockets.on("connection", function(socket) {
                 });
             }
 
+            // restore color
+            Game.colors.push(Game.controllers[socket.id].color);
+
+            // and remove from store
             delete Game.controllers[socket.id];
         }
 
@@ -171,7 +197,7 @@ io.sockets.on("connection", function(socket) {
                     continue;
                 }
 
-                Game.controllers[i].emit("rcv.display-disconnect");
+                Game.controllers[i].socket.emit("rcv.display-disconnect");
             }
 
             Game.display = null;

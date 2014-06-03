@@ -85,7 +85,13 @@ Game.start = function(ctx) {
     // get all the players in the queue
     // and attach them to the game.
     for (var id in Game.queue) {
-        Game.players[id] = Game.createPlayer(id);
+        if (!Game.queue.hasOwnProperty(id)) {
+            continue;
+        }
+
+        var player = Game.queue[id];
+
+        Game.players[player.id] = Game.createPlayer(player.id, player.color);
 
         // and of course, remove it from the queue
         delete Game.queue[id];
@@ -214,7 +220,7 @@ Game.drawPlayer = function(id) {
 
     for (var i = 0; i < player.track.length; i++) {
         var tile = player.track[i];
-        var color = player.alive ? '#FF0000' : '#000000';
+        var color = player.alive ? player.color : '#000000';
 
         Game.ctx.fillStyle = color;
         Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, Game.wx, Game.wy);
@@ -346,12 +352,13 @@ Game.eat = function(player, tile) {
  * Some in-game helper functions
  * TODO check if x/y are already taken.
  */
-Game.createPlayer = function(id) {
+Game.createPlayer = function(id, color) {
     var player = {
         id: id,
         alive: true,
         direction: Game.rand(1, 4),
         hasEaten: false,
+        color: color,
         track: []
     };
 
