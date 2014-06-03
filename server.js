@@ -102,7 +102,6 @@ io.sockets.on("connection", function(socket) {
         Game.display.emit("rcv.new-controller", {
             id: socket.id
         });
-
     });
 
     socket.on("snd.controller-data", function(data) {
@@ -117,6 +116,30 @@ io.sockets.on("connection", function(socket) {
             id: socket.id,
             direction: data.direction
         });
+    });
+
+    socket.on("snd.game-start", function() {
+        if (null !== Game.display) {
+            Game.display.emit("rcv.player-start");
+        }
+
+        for (var i in Game.controllers) {
+            if (!Game.controllers.hasOwnProperty(i)) {
+                continue;
+            }
+
+            Game.controllers[i].emit("rcv.game-started");
+        }
+    });
+
+    socket.on("snd.game-ended", function() {
+        for (var i in Game.controllers) {
+            if (!Game.controllers.hasOwnProperty(i)) {
+                continue;
+            }
+
+            Game.controllers[i].emit("rcv.display-disconnect");
+        }
     });
 
     socket.on("disconnect", function() {
@@ -144,6 +167,10 @@ io.sockets.on("connection", function(socket) {
             Log.out("Display disconnected, inform all collections!", 1);
 
             for (var i in Game.controllers) {
+                if (!Game.controllers.hasOwnProperty(i)) {
+                    continue;
+                }
+
                 Game.controllers[i].emit("rcv.display-disconnect");
             }
 

@@ -2,6 +2,7 @@
 
     // connect to socket
     var socket = io.connect(location.origin);
+    var ctx = document.getElementById('snake').getContext('2d');
 
     socket.on("connect", function() {
         // register as controller
@@ -28,8 +29,16 @@
         Game.disconnect(data.id);
     });
 
+    socket.on("rcv.player-start", function(data) {
+        Game.start(ctx);
+    });
+
+    Game.bus.addListener("ended", function() {
+        socket.emit("snd.game-ended");
+    });
+
     $('.start').click(function() {
-        Game.start(document.getElementById('snake').getContext('2d'));
+        Game.start(ctx);
     });
 
     $('.end').click(function() {
