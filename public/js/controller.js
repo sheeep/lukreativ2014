@@ -38,6 +38,14 @@
                 return false;
             }
         });
+
+        $("#start.btn").on("click", function(event) {
+            socket.emit("snd.game-start");
+        });
+    });
+
+    socket.on("rcv.game-started", function() {
+        $("#start.btn").fadeOut();
     });
 
     socket.on("rcv.register-controller", function(data) {
@@ -57,16 +65,16 @@
 
         switch (e.keyCode) {
             case 37:
-                $('#left').click();
+                $('#left').trigger("touchstart");
                 break;
             case 38:
-                $('#up').click();
+                $('#up').trigger("touchstart");
                 break;
             case 39:
-                $('#right').click();
+                $('#right').trigger("touchstart");
                 break;
             case 40:
-                $('#down').click();
+                $('#down').trigger("touchstart");
                 break;
         }
     });
