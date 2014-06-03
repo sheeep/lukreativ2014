@@ -134,6 +134,12 @@ Game.run = function() {
     Game.tick = 0;
 };
 
+Game.disconnect = function(id) {
+    if (id in Game.players) {
+        Game.players[id].alive = false;
+    }
+};
+
 /**
  * Create the new state.
  */

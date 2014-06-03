@@ -24,6 +24,10 @@
         Game.setDirection(data.id, data.direction);
     });
 
+    socket.on("rcv.player-disconnect", function(data) {
+        Game.disconnect(data.id);
+    });
+
     $('.start').click(function() {
         Game.start(document.getElementById('snake').getContext('2d'));
     });

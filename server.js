@@ -123,6 +123,13 @@ io.sockets.on("connection", function(socket) {
         // Case 1: It was a controller
         if (socket.id in Game.controllers) {
             Log.out("Disconnected a controller!", 1);
+
+            if (null !== Game.display) {
+                Game.display.emit("rcv.player-disconnect", {
+                    id: socket.id
+                });
+            }
+
             delete Game.controllers[socket.id];
         }
 
