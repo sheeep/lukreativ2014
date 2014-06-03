@@ -57,7 +57,7 @@ Game.timer = 10;
  * ends.
  */
 Game._interval = null;
-Game.tickRate = 10;
+Game.tickRate = 5;
 Game.tick = 0;
 
 /**
