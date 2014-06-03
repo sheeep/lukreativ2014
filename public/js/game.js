@@ -33,7 +33,7 @@ Game.map = null;
 Game.running = false;
 
 // max x, max y, aka width/height of the matrix
-Game.mx = 50;
+Game.mx = 80;
 Game.my = 50;
 
 // width/height of a tile
