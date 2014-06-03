@@ -40,12 +40,4 @@
         socket.emit("snd.game-ended");
     });
 
-    $('.start').click(function() {
-        Game.start(ctx);
-    });
-
-    $('.end').click(function() {
-        Game.end();
-    });
-
 })(jQuery);
