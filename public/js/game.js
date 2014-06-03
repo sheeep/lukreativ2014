@@ -91,18 +91,7 @@ Game.start = function(ctx) {
         delete Game.queue[id];
     }
 
-    // create / unset map
-    var map = [];
-
-    for (var x = 0; x < Game.mx; x++) {
-        map[x] = [];
-
-        for (var y = 0; y < Game.my; y++) {
-            map[x][y] = 0;
-        }
-    }
-
-    Game.map = map;
+    Game.resetMap();
     Game.food = [];
 
     // Set the timer and reset render ticker
@@ -138,6 +127,7 @@ Game.run = function() {
 
     Game.calculateState();
     Game.render();
+    Game.resetMap();
     Game.checkFinishConditions();
 
     // reset ticker
@@ -148,8 +138,45 @@ Game.run = function() {
  * Create the new state.
  */
 Game.calculateState = function() {
+    Game.fillMap();
     Game.addFood();
     Game.movePlayers();
+};
+
+Game.fillMap = function() {
+    for (var f = 0; f < Game.food.length; f++) {
+        var food = Game.food[f];
+
+        Game.map[food.x][food.y] = 2;
+    }
+
+    for (var idg in Game.players) {
+        if (!Game.players.hasOwnProperty(idg)) {
+            continue;
+        }
+
+        var player = Game.players[idg];
+
+        for (var i = 0; i < player.track.length; i++) {
+            var tile = player.track[i];
+
+            Game.map[tile.x][tile.y] = 1;
+        }
+    }
+};
+
+Game.resetMap = function() {
+    var map = [];
+
+    for (var x = 0; x < Game.mx; x++) {
+        map[x] = [];
+
+        for (var y = 0; y < Game.my; y++) {
+            map[x][y] = 0;
+        }
+    }
+
+    Game.map = map;
 };
 
 /**
@@ -200,9 +227,24 @@ Game.checkFinishConditions = function() {
     var over = false;
 
     // first check if roundTime is over
-    over |= Game.timer + Game.roundTime < (new Date()).getSeconds();
+    over = over || Game.timer + Game.roundTime < (new Date()).getSeconds();
 
-    if (over) {
+    var l = Object.keys(Game.players).length;
+    var a = 0;
+    for (var idx in Game.players) {
+        if (!Game.players.hasOwnProperty(idx)) {
+            continue;
+        }
+
+        if (true === Game.players[idx].alive) {
+            a++;
+        }
+    }
+
+    over = over || (l === 1 && a === 0);
+    over = over || (l > 1 && a === 1);
+
+    if (true === over) {
         Game.end();
     }
 
@@ -219,8 +261,6 @@ Game.movePlayers = function() {
 
         var player = Game.players[id];
         var head = player.track[0];
-
-        console.log(head);
 
         var x = head.x;
         var y = head.y;
@@ -250,6 +290,11 @@ Game.movePlayers = function() {
 
         Game.eat(player, newHead);
         player.track.unshift(newHead);
+
+        // check for collisions
+        if (Game.collides(newHead.x, newHead.y)) {
+            player.alive = false;
+        }
 
         Game.players[id] = player;
     }
@@ -355,4 +400,12 @@ Game.getTile = function(x, y) {
     y = y < 0 ? Game.my - 1 : y;
 
     return {x: x, y: y};
+};
+
+Game.getFreeTile = function() {
+    // TODO
+};
+
+Game.collides = function(x, y) {
+    return Game.map[x][y] === 1;
 };
