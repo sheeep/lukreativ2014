@@ -87,6 +87,9 @@ Game.startTrackSize = 10;
 
 Game.playerRectangleRadius = 4;
 
+Game.foodImage = new Image();
+Game.foodImage.src = "/img/bug.png";
+
 /**
  * Game Timer
  * Whereas roundTime is the amount of seconds to play
@@ -272,10 +275,12 @@ Game.drawPlayer = function(id) {
 };
 
 Game.drawFood = function() {
+    var pattern = Game.ctx.createPattern(Game.foodImage, "repeat");
+
     for (var i = 0; i < Game.food.length; i++) {
         var item = Game.food[i];
 
-        Game.ctx.fillStyle = '#00FF00';
+        Game.ctx.fillStyle = pattern;
         Game.ctx.fillRect(item.x * Game.wx, item.y * Game.wy, Game.wx, Game.wy);
     }
 };
