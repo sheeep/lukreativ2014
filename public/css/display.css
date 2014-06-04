@@ -73,3 +73,14 @@ li {
     50%  {-webkit-transform: scale(1.0, 1.0); opacity: 1;}
     100% {-webkit-transform: scale(0.9, 0.9); opacity: 0.8;}
 }
+
+#list {
+    position: absolute;
+    width: 100px;
+    right: -120px;
+    top: 0;
+}
+
+#list li {
+    margin:5px;
+}
