@@ -12,15 +12,15 @@
 
 #clock {
     position: absolute;
-    top: -50px;
-    left: 150px;
+    top: -80px;
     height: 50px;
-    width: 200px;
     font-size: 40px;
     line-height: 50px;
     font-weight: bold;
     opacity: 0.9;
     text-shadow: 1px 1px 1px #666;
+    width: 100%;
+    text-align: center;
 }
 
 #winner {

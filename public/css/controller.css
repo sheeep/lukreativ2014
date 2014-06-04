@@ -12,10 +12,19 @@ body {
     overflow: hidden;
 }
 
-#wrapper {
+#wrapper-portrait,
+#wrapper-landscape {
     height: 100%;
     min-height: 100%;
+    display: none;
+}
 
+#wrapper-portrait.active {
+    display: block;
+}
+
+#wrapper-landscape.active {
+    display: block;
 }
 
 .col {
@@ -27,34 +36,68 @@ body {
     text-align: center;
     width: 100%;
     padding: 0;
-    height: 90%;
-    min-height: 90%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+}
+
+.btn-primary {
+    color: #000;
+}
+
+#wrapper-landscape .btn {
+    border-radius: 0;
 }
 
 .btn i {
     line-height: 100%;
 }
 
-.btn:hover{
-    cursor: pointer;
+#wrapper-landscape .row {
+    height: 100%;
+    margin: 0;
 }
 
-.exit {
+#wrapper-landscape .left.row,
+#wrapper-landscape .right.row {
+    height: 50%;
+}
+
+#wrapper-landscape .right.upper.row .btn {
+    background-color: #fff;
+    color: #357ebd;
+    border: none;
+}
+
+.start {
+    display: none;
+}
+
+#wrapper-portrait .row {
+    height: 33%;
+    margin: 0;
+}
+
+#wrapper-portrait .exit {
     position: absolute;
     top: 10px;
     right: 10px;
 }
 
-#start {
-    display:none;
+#wrapper-portrait .start {
     position: absolute;
     top: 10px;
     left: 10px;
 }
 
-.row {
-    height: 33%;
-    margin: 0;
+#wrapper-portrait .btn {
+    height: 90%;
+    min-height: 90%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.fa-lg {
+    font-size: 3em;
+}
+
+.fa-circle {
+    opacity: 0.5;
 }
