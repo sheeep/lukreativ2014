@@ -42,14 +42,27 @@
 
     Game.bus.addListener("game.queue-player", function(player) {
         var element = document.createElement('li');
-        $(element).attr('id', player.id);
-        $(element).css('background-color', player.color);
+        $(element).attr("id", "queue-" + player.id);
+        $(element).css("background-color", player.color);
 
         $('#queue ul').append(element);
     });
 
     Game.bus.addListener("game.disconnect-player", function(data) {
-        $('#queue ul li#'+ data.id).remove();
+        $("#queue ul li#queue-" + data.id).remove();
+        $("#list ul li#player-" + data.id).remove();
+    });
+
+    Game.bus.addListener("game.player-joined", function(player) {
+        // remove from queue
+        $('#queue ul li#queue-'+ player.id).remove();
+
+        // and append to player list
+        var element = document.createElement('li');
+        $(element).attr("id", "player-" + player.id);
+        $(element).css("background-color", player.color);
+
+        $("#list ul").append(element);
     });
 
 })(jQuery);

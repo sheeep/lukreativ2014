@@ -144,6 +144,9 @@ Game.start = function(ctx) {
 
         // and of course, remove it from the queue
         delete Game.queue[id];
+
+        // inform possible frontends
+        Game.bus.emitEvent("game.player-joined", [player]);
     }
 
     Game.resetMap();
@@ -197,7 +200,7 @@ Game.disconnect = function(id) {
     if (id in Game.queue) {
         delete Game.queue[id];
     }
-    
+
     if (id in Game.players) {
         Game.players[id].alive = false;
     }
