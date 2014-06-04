@@ -89,7 +89,7 @@ Game.startTrackSize = 10;
 Game.playerRectangleRadius = 4;
 
 Game.foodImage = new Image();
-Game.foodImage.src = "/img/lukreativ-food.png";
+Game.foodImage.src = "/img/bug.png";
 
 /**
  * Keep track of the interval id
