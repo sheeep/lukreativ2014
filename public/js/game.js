@@ -1,12 +1,3 @@
-var direction = {
-    left: 1,
-    right: 2,
-    up: 3,
-    down: 4
-};
-
-var Game = {};
-
 /**
   * Draws a rounded rectangle using the current state of the canvas.
   * If you omit the last three params, it will draw a rectangle
@@ -19,8 +10,8 @@ var Game = {};
   * @param {Number} radius The corner radius. Defaults to 3;
   * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
   * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
-  *
-  * kudos to http://jsfiddle.net/mendesjuan/d4JJ8/5/
+ *
+ * kudos to http://jsfiddle.net/mendesjuan/d4JJ8/5/
   */
 CanvasRenderingContext2D.prototype.roundRect =
 
@@ -49,6 +40,16 @@ CanvasRenderingContext2D.prototype.roundRect =
             this.fill();
         }
     };
+
+
+var direction = {
+    left: 1,
+    right: 2,
+    up: 3,
+    down: 4
+};
+
+var Game = {};
 
 /**
  * Drawing context, aka pane.
