@@ -89,7 +89,7 @@ Game.startTrackSize = 10;
 Game.playerRectangleRadius = 4;
 
 Game.foodImage = new Image();
-Game.foodImage.src = "/img/lukreativ-food.png";
+Game.foodImage.src = "/img/bug.png";
 
 /**
  * Game Timer
@@ -97,7 +97,7 @@ Game.foodImage.src = "/img/lukreativ-food.png";
  * in one round (max). The timer represents the current
  * time and must be reset when the game starts.
  */
-Game.roundTime = 30;
+Game.roundTime = 60;
 Game.timer = 10;
 
 /**
