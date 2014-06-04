@@ -58,7 +58,7 @@
 
             $(element).attr("id", "winner-" + player.id);
             $(element).css("background-color", player.color);
-            $(element).append("<i class=\"fa fa-trophy\"></i> <span>"+ player.score +"</span>");
+            $(element).append("<span class=\"fa-stack\"><i class=\"fa fa-stack-2x fa-circle\"></i><i class=\"fa fa-stack-1x fa-inverse fa-trophy\"></i></span>");
 
             $('ul', board).append(element);
         }
