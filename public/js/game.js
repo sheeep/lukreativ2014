@@ -194,6 +194,10 @@ Game.run = function() {
 };
 
 Game.disconnect = function(id) {
+    if (id in Game.queue) {
+        delete Game.queue[id];
+    }
+    
     if (id in Game.players) {
         Game.players[id].alive = false;
     }
@@ -476,3 +480,14 @@ Game.getFreeTile = function() {
 Game.collides = function(x, y) {
     return Game.map[x][y] === 1;
 };
+
+/**
+ * EventListener
+ */
+Game.bus.addListener("game.queue-player", function(queued) {
+    Game.queue[queued.id] = queued;
+});
+
+Game.bus.addListener("game.disconnect-player", function(data) {
+    Game.disconnect(data.id);
+});

@@ -18,10 +18,10 @@
     });
 
     socket.on("rcv.new-controller", function(data) {
-        Game.queue[data.id] = {
+        Game.bus.emitEvent("game.queue-player", [{
             id: data.id,
             color: data.color
-        };
+        }]);
     });
 
     socket.on("rcv.controller-data", function(data) {
@@ -29,7 +29,7 @@
     });
 
     socket.on("rcv.player-disconnect", function(data) {
-        Game.disconnect(data.id);
+        Game.bus.emitEvent("game.disconnect-player", [data]);
     });
 
     socket.on("rcv.player-start", function(data) {
@@ -38,6 +38,18 @@
 
     Game.bus.addListener("ended", function() {
         socket.emit("snd.game-ended");
+    });
+
+    Game.bus.addListener("game.queue-player", function(player) {
+        var element = document.createElement('li');
+        $(element).attr('id', player.id);
+        $(element).css('background-color', player.color);
+
+        $('#queue ul').append(element);
+    });
+
+    Game.bus.addListener("game.disconnect-player", function(data) {
+        $('#queue ul li#'+ data.id).remove();
     });
 
 })(jQuery);
