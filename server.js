@@ -124,6 +124,11 @@ io.sockets.on("connection", function(socket) {
             id: socket.id,
             color: pC
         });
+
+        socket.emit("rcv.register-controller", {
+            success: true,
+            color: pC
+        });
     });
 
     socket.on("snd.controller-data", function(data) {
