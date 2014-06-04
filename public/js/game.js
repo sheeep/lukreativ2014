@@ -492,12 +492,25 @@ Game.getWinners = function() {
     var winnerScore = 0;
     var winners = [];
 
+    var playerLen = Object.keys(Game.players).length;
+
     for (var idx in Game.players) {
         if (!Game.players.hasOwnProperty(idx)) {
             return;
         }
 
         var player = Game.players[idx];
+
+        if (playerLen === 1) {
+            winners = [player];
+            winnerScore = player.score;
+
+            break;
+        }
+
+        if (!player.alive) {
+            continue;
+        }
 
         if (player.score > winnerScore) {
             winners = [player];
