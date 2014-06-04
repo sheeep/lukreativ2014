@@ -8,6 +8,49 @@ var direction = {
 var Game = {};
 
 /**
+  * Draws a rounded rectangle using the current state of the canvas.
+  * If you omit the last three params, it will draw a rectangle
+  * outline with a 3 pixel border radius
+  * @param {CanvasRenderingContext2D} ctx
+  * @param {Number} x The top left x coordinate
+  * @param {Number} y The top left y coordinate
+  * @param {Number} width The width of the rectangle
+  * @param {Number} height The height of the rectangle
+  * @param {Number} radius The corner radius. Defaults to 3;
+  * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
+  * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
+  *
+  * kudos to http://jsfiddle.net/mendesjuan/d4JJ8/5/
+  */
+CanvasRenderingContext2D.prototype.roundRect =
+
+    function(x, y, width, height, radius, fill, stroke) {
+        if (typeof stroke == "undefined" ) {
+            stroke = true;
+        }
+        if (typeof radius === "undefined") {
+            radius = 3;
+        }
+        this.beginPath();
+        this.moveTo(x + radius, y);
+        this.lineTo(x + width - radius, y);
+        this.quadraticCurveTo(x + width, y, x + width, y + radius);
+        this.lineTo(x + width, y + height - radius);
+        this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        this.lineTo(x + radius, y + height);
+        this.quadraticCurveTo(x, y + height, x, y + height - radius);
+        this.lineTo(x, y + radius);
+        this.quadraticCurveTo(x, y, x + radius, y);
+        this.closePath();
+        if (stroke) {
+            this.stroke();
+        }
+        if (fill) {
+            this.fill();
+        }
+    };
+
+/**
  * Drawing context, aka pane.
  */
 Game.ctx = null;
@@ -41,6 +84,8 @@ Game.wx = 10;
 Game.wy = 10;
 
 Game.startTrackSize = 10;
+
+Game.playerRectangleRadius = 4;
 
 /**
  * Game Timer
@@ -220,10 +265,9 @@ Game.drawPlayer = function(id) {
 
     for (var i = 0; i < player.track.length; i++) {
         var tile = player.track[i];
-        var color = player.alive ? player.color : '#000000';
 
-        Game.ctx.fillStyle = color;
-        Game.ctx.fillRect(tile.x * Game.wx, tile.y * Game.wy, Game.wx, Game.wy);
+        Game.ctx.fillStyle = player.alive ? player.color : '#000000';
+        Game.ctx.roundRect(tile.x * Game.wx, tile.y * Game.wy, Game.wx, Game.wy, Game.playerRectangleRadius, true);
     }
 };
 
