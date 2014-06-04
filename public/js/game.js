@@ -352,12 +352,15 @@ Game.movePlayers = function() {
         // reset food flag
         player.hasEaten = false;
 
-        switch(player.direction) {
+        switch(player.nextDirection) {
             case direction.up:    y--; break;
             case direction.down:  y++; break;
             case direction.left:  x--; break;
             case direction.right: x++; break;
         }
+
+        // store current direction
+        player.direction = player.nextDirection;
 
         var newHead = Game.getTile(x, y);
 
@@ -416,7 +419,8 @@ Game.createPlayer = function(id, color) {
     var player = {
         id: id,
         alive: true,
-        direction: Game.rand(1, 4),
+        direction: null,
+        nextDirection: Game.rand(1, 4),
         hasEaten: false,
         color: color,
         score: 0,
@@ -462,7 +466,7 @@ Game.setDirection = function(playerId, dir) {
         if (current === direction.left && dir === direction.right) return;
         if (current === direction.right && dir === direction.left) return;
 
-        Game.players[playerId].direction = dir;
+        Game.players[playerId].nextDirection = dir;
     }
 };
 
