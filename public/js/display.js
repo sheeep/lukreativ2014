@@ -3,7 +3,7 @@
     // connect to socket
     var socket = io.connect(location.origin);
     var ctx = document.getElementById('snake').getContext('2d');
-    var lastTime = 0;
+    var locked = false;
 
     socket.on("connect", function() {
         // register as controller
@@ -34,10 +34,41 @@
     });
 
     socket.on("rcv.player-start", function(data) {
+        if (locked) {
+            return;
+        }
+
         Game.start(ctx);
     });
 
-    Game.bus.addListener("ended", function() {
+    Game.bus.addListener("game.ended", function(winners) {
+        // lock new games
+        locked = true;
+
+        var board = $('#winner');
+
+        for (var i = 0; i < winners.length; i++) {
+            var player = winners[i];
+            var element = document.createElement('li');
+
+            $(element).attr("id", "winner-" + player.id);
+            $(element).css("background-color", player.color);
+            $(element).append("<i class=\"fa fa-trophy\"></i> <span>"+ player.score +"</span>");
+
+            $('ul', board).append(element);
+        }
+
+        setTimeout(function() {
+            board.fadeIn("slow");
+
+            setTimeout(function() {
+                board.fadeOut("slow", function() {
+                    locked = false;
+                    $('ul', board).empty();
+                });
+            }, 10000);
+        }, 1500);
+
         socket.emit("snd.game-ended");
     });
 
@@ -72,14 +103,7 @@
     });
 
     Game.bus.addListener("game.time", function(time) {
-        var m, s;
-
-        m = Math.floor(time / 60);
-        time = time % 60;
-
-        s = Math.floor(time);
-
-        $('#clock').text(pad(m, 2) + ":" + pad(s, 2));
+        $('#clock').text(format(time));
     });
 
     // http://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
@@ -87,6 +111,14 @@
         z = 0;
         n = n + '';
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
+
+    function format(time) {
+        var m = Math.floor(time / 60);
+        time = time % 60;
+        var s = Math.floor(time);
+
+        return pad(m, 2) + ":" + pad(s, 2);
     }
 
 })(jQuery);

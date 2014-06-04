@@ -100,7 +100,6 @@ Game._animationInterval = null;
 Game._roundTimeInterval = null;
 Game.tickRate = 5;
 Game.tick = 0;
-Game.roundTimer = 10;
 
 /**
  * "start/end" represents the Start and
@@ -147,20 +146,22 @@ Game.start = function(ctx) {
 
     // Reset render ticker
     Game.tick = 0;
+    Game.roundTimer = 3 * 60;
 
     // Everybody stand back, we start the game loop! Oh yeah,
     // and the poor mans timer.
     Game._animationInterval = requestAnimationFrame(Game.run);
-    Game._roundInterval = setInterval((function() {
+    Game._roundInterval = setInterval(function() {
         Game.roundTimer--;
         Game.bus.emitEvent("game.time", [Game.roundTimer]);
-        return this;
-    }), 1000);
+    }, 1000);
     Game.running = true;
 };
 
 Game.end = function() {
-    Game.bus.emitEvent("ended");
+    var winners = Game.getWinners();
+    Game.bus.emitEvent("game.ended", [winners]);
+
     cancelAnimationFrame(Game._animationInterval);
     clearInterval(Game._roundInterval);
 
@@ -483,6 +484,32 @@ Game.getTile = function(x, y) {
     y = y < 0 ? Game.my - 1 : y;
 
     return {x: x, y: y};
+};
+
+Game.getWinners = function() {
+    var winnerScore = 0;
+    var winners = [];
+
+    for (var idx in Game.players) {
+        if (!Game.players.hasOwnProperty(idx)) {
+            return;
+        }
+
+        var player = Game.players[idx];
+
+        if (player.score > winnerScore) {
+            winners = [player];
+            winnerScore = player.score;
+
+            continue;
+        }
+
+        if (player.score === winnerScore) {
+            winners.push(player);
+        }
+    }
+
+    return winners;
 };
 
 Game.getFreeTile = function() {
