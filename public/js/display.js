@@ -3,6 +3,7 @@
     // connect to socket
     var socket = io.connect(location.origin);
     var ctx = document.getElementById('snake').getContext('2d');
+    var lastTime = 0;
 
     socket.on("connect", function() {
         // register as controller
@@ -61,15 +62,31 @@
         var element = document.createElement('li');
         $(element).attr("id", "player-" + player.id);
         $(element).css("background-color", player.color);
-        $(element).html($("<span>" + player.score + "</span>"));
-
-        console.log(element);
+        $(element).text(player.score);
 
         $("#list ul").append(element);
     });
 
     Game.bus.addListener("game.score-changed", function(player) {
-        $("#list ul li#player-" + player.id).html($("<span>" + player.score + "</span>"));
+        $("#list ul li#player-" + player.id).text(player.score);
     });
+
+    Game.bus.addListener("game.time", function(time) {
+        var m, s;
+
+        m = Math.floor(time / 60);
+        time = time % 60;
+
+        s = Math.floor(time);
+
+        $('#clock').text(pad(m, 2) + ":" + pad(s, 2));
+    });
+
+    // http://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
+    function pad(n, width) {
+        z = 0;
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
 
 })(jQuery);

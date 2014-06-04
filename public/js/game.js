@@ -92,22 +92,15 @@ Game.foodImage = new Image();
 Game.foodImage.src = "/img/lukreativ-food.png";
 
 /**
- * Game Timer
- * Whereas roundTime is the amount of seconds to play
- * in one round (max). The timer represents the current
- * time and must be reset when the game starts.
- */
-Game.roundTime = 30;
-Game.timer = 10;
-
-/**
  * Keep track of the interval id
  * to get rid of it, if the game
  * ends.
  */
-Game._interval = null;
+Game._animationInterval = null;
+Game._roundTimeInterval = null;
 Game.tickRate = 5;
 Game.tick = 0;
+Game.roundTimer = 10;
 
 /**
  * "start/end" represents the Start and
@@ -152,18 +145,24 @@ Game.start = function(ctx) {
     Game.resetMap();
     Game.food = [];
 
-    // Set the timer and reset render ticker
-    Game.timer = (new Date()).getSeconds();
+    // Reset render ticker
     Game.tick = 0;
 
-    // Everybody stand back, we start the game loop!
-    Game._interval = requestAnimationFrame(Game.run);
+    // Everybody stand back, we start the game loop! Oh yeah,
+    // and the poor mans timer.
+    Game._animationInterval = requestAnimationFrame(Game.run);
+    Game._roundInterval = setInterval((function() {
+        Game.roundTimer--;
+        Game.bus.emitEvent("game.time", [Game.roundTimer]);
+        return this;
+    }), 1000);
     Game.running = true;
 };
 
 Game.end = function() {
     Game.bus.emitEvent("ended");
-    cancelAnimationFrame(Game._interval);
+    cancelAnimationFrame(Game._animationInterval);
+    clearInterval(Game._roundInterval);
 
     Game.players = {};
     Game.queue = {};
@@ -178,7 +177,7 @@ Game.end = function() {
 };
 
 Game.run = function() {
-    Game._interval = requestAnimationFrame(Game.run);
+    Game._animationInterval = requestAnimationFrame(Game.run);
 
     // increment tick
     Game.tick++;
@@ -186,6 +185,8 @@ Game.run = function() {
     if (Game.tick < Game.tickRate) {
         return;
     }
+
+    Game.bus.emitEvent("game.tick");
 
     Game.calculateState();
     Game.render();
@@ -300,7 +301,7 @@ Game.checkFinishConditions = function() {
     var over = false;
 
     // first check if roundTime is over
-    over = over || Game.timer + Game.roundTime < (new Date()).getSeconds();
+    over = over || Game.roundTimer <= 0;
 
     var l = Object.keys(Game.players).length;
     var a = 0;
