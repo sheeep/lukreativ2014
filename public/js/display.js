@@ -61,8 +61,15 @@
         var element = document.createElement('li');
         $(element).attr("id", "player-" + player.id);
         $(element).css("background-color", player.color);
+        $(element).html($("<span>" + player.score + "</span>"));
+
+        console.log(element);
 
         $("#list ul").append(element);
+    });
+
+    Game.bus.addListener("game.score-changed", function(player) {
+        $("#list ul li#player-" + player.id).html($("<span>" + player.score + "</span>"));
     });
 
 })(jQuery);

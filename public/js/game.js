@@ -146,7 +146,7 @@ Game.start = function(ctx) {
         delete Game.queue[id];
 
         // inform possible frontends
-        Game.bus.emitEvent("game.player-joined", [player]);
+        Game.bus.emitEvent("game.player-joined", [Game.players[player.id]]);
     }
 
     Game.resetMap();
@@ -400,7 +400,10 @@ Game.eat = function(player, tile) {
         if (food.x === tile.x && food.y === tile.y) {
             // hit!
             player.hasEaten = true;
+            player.score += 10;
             Game.food.splice(i, 1);
+
+            Game.bus.emitEvent("game.score-changed", [player]);
         }
     }
 };
@@ -416,6 +419,7 @@ Game.createPlayer = function(id, color) {
         direction: Game.rand(1, 4),
         hasEaten: false,
         color: color,
+        score: 0,
         track: []
     };
 
