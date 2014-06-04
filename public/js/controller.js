@@ -13,6 +13,7 @@
 
     // connect to socket
     var socket = io.connect(location.origin);
+    var startable = false;
 
     socket.on("connect", function() {
         // register as controller
@@ -42,12 +43,28 @@
         });
 
         $("#start").on("click", function(event) {
+            if (!startable) {
+                return;
+            }
+
             socket.emit("snd.game-start");
         });
     });
 
     socket.on("rcv.game-started", function() {
         $("#start").fadeOut();
+    });
+
+    socket.on("rcv.startable", function(bool) {
+        if (bool === true) {
+            $("#start").fadeIn();
+        }
+
+        if (bool === false) {
+            $("#start").fadeOut();
+        }
+
+        startable = bool;
     });
 
     socket.on("rcv.register-controller", function(data) {

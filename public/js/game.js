@@ -156,6 +156,8 @@ Game.start = function(ctx) {
         Game.bus.emitEvent("game.time", [Game.roundTimer]);
     }, 1000);
     Game.running = true;
+
+    Game.bus.emitEvent("game.started");
 };
 
 Game.end = function() {

@@ -23,6 +23,8 @@
             id: data.id,
             color: data.color
         }]);
+
+        socket.emit("snd.startable", Game.ready() && !locked);
     });
 
     socket.on("rcv.controller-data", function(data) {
@@ -45,6 +47,9 @@
         // lock new games
         locked = true;
 
+        // hide buttons on controllers
+        socket.emit("snd.startable", false);
+
         var board = $('#winner');
 
         for (var i = 0; i < winners.length; i++) {
@@ -65,6 +70,9 @@
                 board.fadeOut("slow", function() {
                     locked = false;
                     $('ul', board).empty();
+
+                    // show buttons on controllers
+                    socket.emit("snd.startable", true);
                 });
             }, 10000);
         }, 1500);
@@ -104,6 +112,11 @@
 
     Game.bus.addListener("game.time", function(time) {
         $('#clock').text(format(time));
+    });
+
+    Game.bus.addListener("game.started", function() {
+        locked = true;
+        socket.emit("snd.startable", false);
     });
 
     // http://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript

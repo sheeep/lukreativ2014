@@ -144,13 +144,15 @@ io.sockets.on("connection", function(socket) {
         if (null !== Game.display) {
             Game.display.emit("rcv.player-start");
         }
+    });
 
+    socket.on("snd.startable", function(startable) {
         for (var i in Game.controllers) {
             if (!Game.controllers.hasOwnProperty(i)) {
                 continue;
             }
 
-            Game.controllers[i].socket.emit("rcv.game-started");
+            Game.controllers[i].socket.emit("rcv.startable", startable);
         }
     });
 
