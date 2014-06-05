@@ -344,7 +344,7 @@ Game.movePlayers = function() {
 
         // do nothing if player is dead
         if (!player.alive) {
-            return;
+            continue;
         }
 
         // first of all, remove the last part
