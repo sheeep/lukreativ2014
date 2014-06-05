@@ -96,4 +96,14 @@ li {
 
 #list li {
     margin:5px;
+    text-align:center;
+}
+
+#list li .fa-circle {
+    opacity:0.5;
+}
+
+#list li .fa-stack-1x {
+    font-size: 35px;
+    font-weight: bold;
 }

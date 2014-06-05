@@ -101,13 +101,13 @@
         var element = document.createElement('li');
         $(element).attr("id", "player-" + player.id);
         $(element).css("background-color", player.color);
-        $(element).text(player.score);
+        $(element).html("<span class=\"fa-stack\"><i class=\"fa fa-stack-2x fa-circle\"></i><i class=\"fa fa-stack-1x fa-inverse\">"+ player.score +"</i></span>");
 
         $("#list ul").append(element);
     });
 
     Game.bus.addListener("game.score-changed", function(player) {
-        $("#list ul li#player-" + player.id).text(player.score);
+        $("#list ul li#player-" + player.id).html("<span class=\"fa-stack\"><i class=\"fa fa-stack-2x fa-circle\"></i><i class=\"fa fa-stack-1x fa-inverse\">"+ player.score +"</i></span>");
     });
 
     Game.bus.addListener("game.time", function(time) {
