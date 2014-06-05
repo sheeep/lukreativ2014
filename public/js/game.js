@@ -125,6 +125,11 @@ Game.start = function(ctx) {
 
     // get all the players in the queue
     // and attach them to the game.
+
+    var upDown = Game.rand(0, 1) === 1;
+    var len = Object.keys(Game.queue).length;
+    var i = 0;
+
     for (var id in Game.queue) {
         if (!Game.queue.hasOwnProperty(id)) {
             continue;
@@ -132,13 +137,15 @@ Game.start = function(ctx) {
 
         var player = Game.queue[id];
 
-        Game.players[player.id] = Game.createPlayer(player.id, player.color);
+        Game.players[player.id] = Game.createPlayer(player.id, player.color, i, len, upDown);
 
         // and of course, remove it from the queue
         delete Game.queue[id];
 
         // inform possible frontends
         Game.bus.emitEvent("game.player-joined", [Game.players[player.id]]);
+
+        i++;
     }
 
     Game.resetMap();
@@ -169,12 +176,6 @@ Game.end = function() {
 
     Game.players = {};
     Game.queue = {};
-    /*
-    // clear player array by shoveling them to the queue
-    for (var id in Game.players) {
-        Game.queue[id] = Game.players[id].id;
-        delete Game.players[id];
-    }*/
 
     Game.running = false;
 };
@@ -419,27 +420,47 @@ Game.eat = function(player, tile) {
  * Some in-game helper functions
  * TODO check if x/y are already taken.
  */
-Game.createPlayer = function(id, color) {
+Game.createPlayer = function(id, color, j, len, upDown) {
     var player = {
         id: id,
         alive: true,
         direction: null,
-        nextDirection: Game.rand(1, 4),
+        nextDirection: null,
         hasEaten: false,
         color: color,
         score: 0,
         track: []
     };
 
-    // create a start head tile
-    var hX = Game.rand(Game.startTrackSize, (Game.mx - 1 - Game.startTrackSize));
-    var hY = Game.rand(Game.startTrackSize, (Game.my - 1 - Game.startTrackSize));
+    player.nextDirection = upDown ? Game.rand(3, 4) : Game.rand(1, 2);
 
-    player.track.push({x: hX, y: hY});
+    var head = {};
+    (function(j, len, upDown) {
+        var w = null;
+
+        if (upDown === true) {
+
+            w = Math.floor(Game.mx / len);
+
+            head.y = Game.rand(0, Game.my);
+            head.x = Game.rand(j * w, (j + 1) * w) - 1;
+        }
+
+        if (upDown === false) {
+            w = Math.floor(Game.my / len);
+
+            head.x = Game.rand(0, Game.mx);
+            head.y = Game.rand(j * w, (j + 1) * w) - 1;
+        }
+    })(j, len, upDown);
+
+    console.log(head);
+
+    player.track.push(head);
 
     for (var i = 1; i < Game.startTrackSize; i++) {
-        var x = hX;
-        var y = hY;
+        var x = head.x;
+        var y = head.y;
 
         switch(player.direction) {
             case direction.up:    y += i; break;
@@ -527,12 +548,12 @@ Game.getWinners = function() {
     return winners;
 };
 
-Game.getFreeTile = function() {
-    // TODO
-};
-
 Game.collides = function(x, y) {
     return Game.map[x][y] === 1;
+};
+
+Game.createStartPositions = function(i) {
+
 };
 
 /**

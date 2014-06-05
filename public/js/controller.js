@@ -33,15 +33,8 @@
             return false;
         });
 
-        $(".exit i").on("click", function(event) {
-            var r = confirm("Do you really wanna leave this epic game?");
-
-            if (true === r) {
-                window.location.href = routes.thanks;
-                return false;
-            }
-
-            return true;
+        $(".exit").on("click", function(event) {
+            window.location.href = routes.thanks;
         });
 
         $(".start").on("click", function(event) {

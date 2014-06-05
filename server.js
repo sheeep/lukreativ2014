@@ -16,11 +16,11 @@ app.use(express.static(__dirname + "/public"));
 
 server.listen(8090);
 
-app.get("/", function(req, res) {
+app.get("/display", function(req, res) {
     res.render("display");
 });
 
-app.get("/controller", function(req, res) {
+app.get("/", function(req, res) {
     res.render("controller");
 });
 
