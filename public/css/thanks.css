@@ -1,0 +1,42 @@
+body, html {
+    height:100%;
+    min-height:100%;
+}
+
+body > .container {
+    text-align:center;
+}
+
+.info-row {
+    font-size:1.2em;
+    margin-top:20px;
+}
+
+.info-row a {
+    font-size:1.5em;
+    font-weight:bold;
+}
+
+.info-row .fa-heart {
+    color:#f00;
+    font-size:45px;
+    -webkit-animation: pulsate 3s ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+}
+
+.button-row {
+    position:absolute;
+    bottom:15px;
+    width:100%;
+    padding:0 10px;
+}
+
+.button-row a.btn {
+    width:100%;
+}
+
+@-webkit-keyframes pulsate {
+    0%   {-webkit-transform: scale(0.5, 0.5); opacity: 0.9;}
+    50%  {-webkit-transform: scale(1.0, 1.0); opacity: 1;}
+    100% {-webkit-transform: scale(0.5, 0.5); opacity: 0.9;}
+}

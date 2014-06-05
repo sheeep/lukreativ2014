@@ -20,9 +20,39 @@
 </head>
 <body>
 
-    <div id="wrapper">
-        <a href="/controller">Go back to start</a>
+<div class="container">
+    <div class="col col-xs-12">
+        <div class="row logo-row">
+            <img src="/img/logo.png">
+        </div>
     </div>
+
+    <div class="col col-xs-12">
+        <div class="row info-row">
+            <p><i class="fa fa-heart"></i></p>
+            <p>Brought to you by 1up GmbH.</p>
+            <p><a href="http://1up.io">1up.io</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="button-row">
+    <a class="btn btn-primary btn-lg" href="/controller">
+        <i class="fa fa-spin fa-refresh"></i>
+        Neues Spiel
+    </a>
+</div>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+$(window).on("orientationchange load", function() {
+    if (window.orientation !== 0) {
+        $('.col').removeClass('col-xs-12').addClass('col-xs-6');
+    } else {
+        $('.col').removeClass('col-xs-6').addClass('col-xs-12');
+    }
+});
+</script>
 
 </body>
 </html>
