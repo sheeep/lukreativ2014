@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2, minimum-scale=1, user-scalable=1">
+
+    <title>1up Gallery</title>
+    <style>
+    .galleria-container {
+        background-color:#fff;
+    }
+    </style>
+</head>
+<body>
+    <div class="galleria">
+        <img src="img/1.jpg">
+        <img src="img/2.jpg">
+        <img src="img/3.png">
+        <img src="img/4.jpg">
+    </div>
+
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/galleria-1.3.5.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        Galleria.loadTheme("fullscreen/galleria.fullscreen.min.js");
+        Galleria.configure({
+            transition: 'fade',
+            imageCrop: false,
+            showCounter: false,
+            showInfo: false,
+            showImagenav: false,
+            thumbnails: false,
+            autoplay: 4000
+        });
+        Galleria.run('.galleria');
+    });
+    </script>
+</body>
+</html>
