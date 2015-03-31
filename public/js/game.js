@@ -320,7 +320,7 @@ Game.checkFinishConditions = function() {
     }
 
     over = over || (l === 1 && a === 0);
-    over = over || (l > 1 && a === 1);
+    over = over || (l > 1 && a <= 1);
 
     if (true === over) {
         Game.end();

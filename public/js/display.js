@@ -74,7 +74,7 @@
                     // show buttons on controllers
                     socket.emit("snd.startable", true);
                 });
-            }, 10000);
+            }, 3000);
         }, 1500);
 
         socket.emit("snd.game-ended");
